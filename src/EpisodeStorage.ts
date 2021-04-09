@@ -1,14 +1,21 @@
 import { Episode } from "./Episode";
 import fs from "fs";
+import { Channel, shortName } from "./Channel";
+import log from "./Log";
 
-const EPISODE_JSON = "data/episodes.json";
-
-export function getEpisodes(): Episode[] {
-  if (!fs.existsSync(EPISODE_JSON)) fs.writeFileSync(EPISODE_JSON, "[]");
-
-  return JSON.parse(fs.readFileSync(EPISODE_JSON).toString());
+function jsonPath(channel: Channel) {
+  return `data/episodes_${shortName(channel)}.json`;
 }
 
-export function saveEpisodes(episodes: Episode[]) {
-  fs.writeFileSync(EPISODE_JSON, JSON.stringify(episodes));
+export function getEpisodes(channel: Channel): Episode[] {
+  const filepath = jsonPath(channel);
+  if (!fs.existsSync(filepath)) fs.writeFileSync(filepath, "[]");
+
+  return JSON.parse(fs.readFileSync(filepath).toString());
+}
+
+export function saveEpisodes(channel: Channel, episodes: Episode[]) {
+  const filepath = jsonPath(channel);
+  log(`WRITE ${channel}`);
+  fs.writeFileSync(filepath, JSON.stringify(episodes));
 }

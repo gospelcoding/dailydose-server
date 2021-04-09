@@ -1,14 +1,23 @@
+import { decode } from "html-entities";
+import { matchingBook } from "./BibleBook";
+import log from "./Log";
+
 export interface Reference {
   book: string;
   chapter: number;
   verse: number;
 }
 
-export interface Episode {
+export interface NewEpisode {
   title: string;
   url: string;
   reference?: Reference;
   vimeoId?: number;
+  youtubeId?: string;
+}
+
+export interface Episode extends NewEpisode {
+  id: number;
 }
 
 export interface RSSItem {
@@ -17,25 +26,33 @@ export interface RSSItem {
   "content:encoded": string;
 }
 
-export function episodeFromRSS(item: RSSItem): Episode {
-  const reference = parseRefFromTitle(item.title);
+export function episodeFromRSS(item: RSSItem, sp: boolean): NewEpisode {
+  const title = decode(item.title);
+  const reference = parseRefFromTitle(title, sp);
   const vimeoId = parseVimeoId(item["content:encoded"]);
+  const youtubeId = parseYoutubeId(item["content:encoded"]);
 
-  const episode: Episode = {
-    title: item.title,
+  const episode: NewEpisode = {
+    title,
     url: item.link
   };
   if (reference) episode.reference = reference;
   if (vimeoId) episode.vimeoId = vimeoId;
+  if (youtubeId) episode.youtubeId = youtubeId;
+
   return episode;
 }
 
-function parseRefFromTitle(title: string): Reference | undefined {
-  const pattern = /(.+) (\d+):(\d+)/;
+function parseRefFromTitle(title: string, sp: boolean): Reference | undefined {
+  const pattern = /(.+) (\d+)[:-](\d+)/;
   const match = pattern.exec(title);
   if (!match) return undefined;
+
+  const book = matchingBook(match[1], sp);
+  if (!book) return undefined;
+
   return {
-    book: match[1],
+    book,
     chapter: parseInt(match[2]),
     verse: parseInt(match[3])
   };
@@ -46,4 +63,21 @@ function parseVimeoId(content: string): number | undefined {
   const match = pattern.exec(content);
   if (!match) return undefined;
   return parseInt(match[1]);
+}
+
+function parseYoutubeId(content: string): string | undefined {
+  const pattern = /youtube\.com\/embed\/(.+?)[?"']/;
+  const match = pattern.exec(content);
+  if (!match) return undefined;
+  return match[1];
+}
+
+export function addNewEpisodes(
+  episodes: Episode[],
+  newEpisodes: NewEpisode[]
+): Episode[] {
+  const lastId = episodes[0] ? episodes[0].id : 0;
+  return newEpisodes
+    .map((ep, index) => ({ id: lastId + (newEpisodes.length - index), ...ep }))
+    .concat(episodes);
 }

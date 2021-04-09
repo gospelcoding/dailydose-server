@@ -1,19 +1,33 @@
 import got from "got";
 import parser from "fast-xml-parser";
-import { Episode, episodeFromRSS, RSSItem } from "./Episode";
+import {
+  addNewEpisodes,
+  Episode,
+  episodeFromRSS,
+  NewEpisode,
+  RSSItem
+} from "./Episode";
 import { getEpisodes, saveEpisodes } from "./EpisodeStorage";
+import { Channel, CHANNELS, GREEK_SP, shortName } from "./Channel";
+import log from "./Log";
 
 updateEpisodes();
 
 export default async function updateEpisodes() {
-  const episodes = getEpisodes();
-  const newEpisodes = [];
+  return Promise.all(
+    CHANNELS.map(channel => updateEpisodesForChannel(channel))
+  );
+}
+
+async function updateEpisodesForChannel(channel: Channel) {
+  const episodes = getEpisodes(channel);
+  const newEpisodes: NewEpisode[] = [];
   const lastFetchUrl = episodes[0] ? episodes[0].url : "BETTER FETCH 'EM ALL";
   let done = false;
   let page = 1;
 
   while (!done) {
-    const currentEpisodes = await fetchPage(page);
+    const currentEpisodes = await fetchPage(channel, page);
     if (currentEpisodes.length == 0) done = true;
     let i = 0;
     while (i < currentEpisodes.length && !done) {
@@ -25,26 +39,25 @@ export default async function updateEpisodes() {
       i += 1;
     }
     page += 1;
-    console.log(`PAGE: ${page}`);
+    log(`${shortName(channel)} PAGE: ${page}`);
   }
 
-  saveEpisodes(newEpisodes.concat(episodes));
+  if (newEpisodes.length > 0)
+    saveEpisodes(channel, addNewEpisodes(episodes, newEpisodes));
 }
 
-async function fetchPage(page: number): Promise<Episode[]> {
+async function fetchPage(channel: Channel, page: number): Promise<Episode[]> {
   try {
-    const buffer = await got(
-      `https://dailydoseofgreek.com/feed/?paged=${page}`,
-      {
-        responseType: "buffer",
-        resolveBodyOnly: true,
-        timeout: 5000,
-        retry: 5
-      }
-    );
+    const buffer = await got(`https://${channel}.com/feed/?paged=${page}`, {
+      responseType: "buffer",
+      resolveBodyOnly: true,
+      timeout: 5000,
+      retry: 5
+    });
     const feed = parser.parse(buffer.toString());
-    // console.log(feed.rss.channel.item[1]["content:encoded"]);
-    return feed.rss.channel.item.map((item: RSSItem) => episodeFromRSS(item));
+    return feed.rss.channel.item.map((item: RSSItem) =>
+      episodeFromRSS(item, channel == GREEK_SP)
+    );
   } catch (err) {
     if (err.response?.statusCode == 404) {
       return [];
