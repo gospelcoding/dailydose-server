@@ -1,6 +1,6 @@
-import { Episode } from "./Episode";
+import { Episode, MultiChannelEpisodes } from "./Episode";
 import fs from "fs";
-import { Channel, shortName } from "./Channel";
+import { Channel, CHANNELS, shortName } from "./Channel";
 import log from "./Log";
 
 function jsonPath(channel: Channel) {
@@ -12,6 +12,14 @@ export function getEpisodes(channel: Channel): Episode[] {
   if (!fs.existsSync(filepath)) fs.writeFileSync(filepath, "[]");
 
   return JSON.parse(fs.readFileSync(filepath).toString());
+}
+
+export function getAllEpisodes(): MultiChannelEpisodes {
+  const allEpisodes: MultiChannelEpisodes = {};
+  CHANNELS.forEach(channel => {
+    allEpisodes[channel] = getEpisodes(channel);
+  });
+  return allEpisodes;
 }
 
 export function saveEpisodes(channel: Channel, episodes: Episode[]) {

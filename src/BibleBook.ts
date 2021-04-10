@@ -1,4 +1,18 @@
+import { Episode } from "./Episode";
+
 const MIN_MATCH = 3;
+
+export interface RichBook {
+  name: string;
+  count: number;
+}
+
+export interface RichChapter {
+  chapter: number;
+  count: number;
+}
+
+export const SPECIAL = "Special";
 
 const BIBLE_BOOKS = [
   "Genesis",
@@ -170,7 +184,40 @@ function match(base: string, book: string, size: number) {
   return base.slice(base.length - size) == book.slice(0, size);
 }
 
-export function sortBooks(books: string[], sp: boolean) {
+export function compBooks(a: string, b: string, sp: boolean) {
   const bookList = sp ? BIBLE_BOOKS_SP : BIBLE_BOOKS;
-  books.sort((a, b) => bookList.indexOf(a) - bookList.indexOf(b));
+  const indexOf = (str: string) => {
+    const index = bookList.indexOf(str);
+    return index >= 0 ? index : 10000; // Not in list needs to go to back
+  };
+  return indexOf(a) - indexOf(b);
+}
+
+export function getRichBooks(episodes: Episode[], sp: boolean) {
+  const books = episodes.reduce((bookNames: RichBook[], ep) => {
+    const name = ep.reference ? ep.reference.book : SPECIAL;
+    const index = bookNames.findIndex(bn => bn.name == name);
+    if (index == -1) {
+      bookNames.push({ name, count: 1 });
+    } else {
+      bookNames[index].count += 1;
+    }
+    return bookNames;
+  }, []);
+  books.sort((a, b) => compBooks(a.name, b.name, sp));
+  return books;
+}
+
+export function getRichChapters(episodes: Episode[], book: string) {
+  const chaps = episodes.reduce((chaps: { [ch: string]: number }, ep) => {
+    if (ep.reference?.book == book) {
+      const ch = ep.reference.chapter;
+      if (!chaps[ch]) chaps[ch] = 0;
+      chaps[ch] += 1;
+    }
+    return chaps;
+  }, {});
+  return Object.keys(chaps)
+    .sort((a, b) => parseInt(a) - parseInt(b))
+    .map(ch => ({ chapter: parseInt(ch), count: chaps[ch] }));
 }

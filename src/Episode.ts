@@ -20,6 +20,10 @@ export interface Episode extends NewEpisode {
   id: number;
 }
 
+export interface MultiChannelEpisodes {
+  [key: string]: Episode[]; // key must actually be Channel, but TS won't let me say that
+}
+
 export interface RSSItem {
   title: string;
   link: string;

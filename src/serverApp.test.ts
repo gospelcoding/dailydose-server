@@ -51,18 +51,32 @@ test("All from 2", async () => {
 test("Books", async () => {
   let response = await request(app).get("/dailydoseofgreek/books");
   expect(response.status).toBe(200);
-  expect(response.body.slice(0, 3)).toEqual(["Psalms", "Matthew", "Mark"]);
+  expect(response.body.slice(0, 3)).toEqual([
+    {
+      count: 11,
+      name: "Psalms"
+    },
+    {
+      count: 13,
+      name: "Matthew"
+    },
+    {
+      count: 681,
+      name: "Mark"
+    }
+  ]);
+  expect(response.body[response.body.length - 1].name).toBe("Special");
 });
 
 test("Chapters in books", async () => {
   let response = await request(app).get("/dailydoseofgreek/book/Mark");
   expect(response.status).toBe(200);
   expect(response.body.length).toBe(16);
-  expect(response.body.slice(0, 3)).toEqual([1, 2, 3]);
+  expect(response.body[0]).toEqual({ chapter: 1, count: 46 });
 
-  response = await request(app).get("/dailydoseofgreek/book/Philippians");
+  response = await request(app).get("/dailydoseofgreek/book/Psalms");
   expect(response.status).toBe(200);
-  expect(response.body).toEqual([1, 2]);
+  expect(response.body).toEqual([{ chapter: 50, count: 11 }]);
 });
 
 test("Episodes in chapter", async () => {
@@ -92,4 +106,16 @@ test("Episodes in chapter", async () => {
     "Phil 2-9-11b",
     "Phil 2-9-11"
   ]);
+});
+
+test("Search", async () => {
+  let response = await request(app).get("/search?q=accent");
+  expect(response.status).toBe(200);
+  expect(response.body.dailydoseofgreek[0].title).toBe("Greek Accents");
+
+  response = await request(app).get("/search?q=aspect imper");
+  expect(response.status).toBe(200);
+  expect(response.body.dailydoseofgreek[0].title).toBe(
+    "Imperatives-Debates-Verbal Aspect"
+  );
 });
