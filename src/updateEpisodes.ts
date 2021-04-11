@@ -10,8 +10,8 @@ import {
 import { getEpisodes, saveEpisodes } from "./EpisodeStorage";
 import { Channel, CHANNELS, GREEK_SP, shortName } from "./Channel";
 import log from "./Log";
-
-updateEpisodes();
+import { addVerseTexts } from "./BibleAPI";
+import markNextEpisode from "./markNextEpisode";
 
 export default async function updateEpisodes() {
   return Promise.all(
@@ -42,8 +42,12 @@ async function updateEpisodesForChannel(channel: Channel) {
     log(`${shortName(channel)} PAGE: ${page}`);
   }
 
-  if (newEpisodes.length > 0)
-    saveEpisodes(channel, addNewEpisodes(episodes, newEpisodes));
+  if (newEpisodes.length > 0) {
+    await addVerseTexts(newEpisodes, channel);
+    const finalEpisodes = addNewEpisodes(episodes, newEpisodes);
+    markNextEpisode(finalEpisodes);
+    saveEpisodes(channel, finalEpisodes);
+  }
 }
 
 async function fetchPage(channel: Channel, page: number): Promise<Episode[]> {

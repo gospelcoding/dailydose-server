@@ -36,7 +36,6 @@ const BIBLE_BOOKS = [
   "Psalms",
   "Proverbs",
   "Ecclesiastes",
-  "Song of Solomon",
   "Song of Songs",
   "Isaiah",
   "Jeremiah",
@@ -220,4 +219,14 @@ export function getRichChapters(episodes: Episode[], book: string) {
   return Object.keys(chaps)
     .sort((a, b) => parseInt(a) - parseInt(b))
     .map(ch => ({ chapter: parseInt(ch), count: chaps[ch] }));
+}
+
+export function isNT(book: string, sp: boolean) {
+  const bibleBooks = sp ? BIBLE_BOOKS_SP : BIBLE_BOOKS;
+  const matthew = sp ? "Mateo" : "Matthew";
+  return bibleBooks.indexOf(book) >= bibleBooks.indexOf(matthew);
+}
+
+export function spToEng(book: string) {
+  return BIBLE_BOOKS[BIBLE_BOOKS_SP.indexOf(book)];
 }

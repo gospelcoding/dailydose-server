@@ -14,6 +14,8 @@ export interface NewEpisode {
   reference?: Reference;
   vimeoId?: number;
   youtubeId?: string;
+  text?: string;
+  next?: number;
 }
 
 export interface Episode extends NewEpisode {
@@ -84,4 +86,16 @@ export function addNewEpisodes(
   return newEpisodes
     .map((ep, index) => ({ id: lastId + (newEpisodes.length - index), ...ep }))
     .concat(episodes);
+}
+
+export function chapterEpisodes(
+  episodes: Episode[],
+  book: string,
+  chapter: number
+) {
+  const chEpisodes = episodes.filter(
+    ep => ep.reference?.book == book && ep.reference?.chapter == chapter
+  );
+  chEpisodes.sort((a, b) => a.reference!.verse - b.reference!.verse);
+  return chEpisodes;
 }

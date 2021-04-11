@@ -20,12 +20,12 @@ test("All", async () => {
   expect(response.status).toBe(200);
   expect(response.body.length).toBe(15);
   expect(response.body[0]).toEqual({
-    id: 2095,
-    title: "John 7:41",
-    url: "https://dailydoseofgreek.com/scripture-passage/john-7-41/",
-    reference: { book: "John", chapter: 7, verse: 41 },
-    vimeoId: 528291444,
-    youtubeId: "fu0beY5sv9o"
+    id: 2096,
+    title: "Biblical Words and Their Meaning, by Moisés Silva",
+    url:
+      "https://dailydoseofgreek.com/scripture-passage/biblical-words-and-their-meaning-by-moises-silva/",
+    vimeoId: 478438863,
+    youtubeId: "6xJ24D4e8eY"
   });
 });
 
@@ -38,7 +38,9 @@ test("All from 1000", async () => {
     title: "2 John 1-10",
     url: "https://dailydoseofgreek.com/scripture-passage/2-john-1-10/",
     reference: { book: "2 John", chapter: 1, verse: 10 },
-    vimeoId: 246116481
+    vimeoId: 246116481,
+    text:
+      "ει τις ερχεται προς υμας και ταυτην την διδαχην ου φερει μη λαμβανετε αυτον εις οικιαν και χαιρειν αυτω μη λεγετε"
   });
 });
 
@@ -94,7 +96,10 @@ test("Episodes in chapter", async () => {
     },
     title: "Mark 2:1",
     url: "https://dailydoseofgreek.com/scripture-passage/mark/mark-21/",
-    vimeoId: 124760846
+    vimeoId: 124760846,
+    text:
+      "και εισελθων παλιν εις καφαρναουμ δι ημερων ηκουσθη οτι εν οικω εστιν",
+    next: 254
   });
 
   response = await request(app).get(

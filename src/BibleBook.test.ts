@@ -1,4 +1,4 @@
-import { getRichBooks, getRichChapters, matchingBook } from "./BibleBook";
+import { getRichBooks, getRichChapters, isNT, matchingBook } from "./BibleBook";
 import { Episode } from "./Episode";
 import { getEpisodes } from "./EpisodeStorage";
 
@@ -55,4 +55,13 @@ test("get rich chapters", () => {
   const chaps = getRichChapters(episodes, "Mark");
   expect(chaps.length).toBe(16);
   expect(chaps[0]).toEqual({ chapter: 1, count: 46 });
+});
+
+test("isNT", () => {
+  expect(isNT("Isaiah", false)).toBe(false);
+  expect(isNT("Matthew", false)).toBe(true);
+  expect(isNT("Revelation", false)).toBe(true);
+  expect(isNT("Abdías", true)).toBe(false);
+  expect(isNT("Mateo", true)).toBe(true);
+  expect(isNT("Santiago", true)).toBe(true);
 });

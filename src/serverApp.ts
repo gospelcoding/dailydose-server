@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { getRichBooks, getRichChapters } from "./BibleBook";
 import { Channel, CHANNELS, GREEK_SP, isChannel } from "./Channel";
-import { Episode } from "./Episode";
+import { chapterEpisodes, Episode } from "./Episode";
 import { getAllEpisodes, getEpisodes } from "./EpisodeStorage";
 
 const PAGE_SIZE = 15;
@@ -49,13 +49,7 @@ export default function serverApp() {
   app.get("/:channel/book/:book/chapter/:chapter", (req, res) => {
     useEpisodes(req, res, episodes => {
       const chapter = parseInt(req.params.chapter);
-      const chEpisodes = episodes.filter(
-        ep =>
-          ep.reference?.book == req.params.book &&
-          ep.reference?.chapter == chapter
-      );
-      chEpisodes.sort((a, b) => a.reference!.verse - b.reference!.verse);
-      res.json(chEpisodes);
+      res.json(chapterEpisodes(episodes, req.params.book, chapter));
     });
   });
 
