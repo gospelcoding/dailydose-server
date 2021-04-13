@@ -4,8 +4,10 @@ import { CHANNELS } from "./Channel";
 import { getEpisodes, saveEpisodes } from "./EpisodeStorage";
 import log from "./Log";
 import markNextEpisode from "./markNextEpisode";
+import updateEpisodes from "./updateEpisodes";
 
 // markAll();
+// runUpdate();
 
 // Mark next episodes
 function markAll() {
@@ -23,6 +25,18 @@ function markAll() {
 
 // Redo latest from scratch - delete most recent in each channel and then run update
 // Also delete any "next" param from the 2nd to last episode
+async function runUpdate() {
+  console.log("Remove latest episode...");
+  CHANNELS.forEach(channel => {
+    const episodes = getEpisodes(channel);
+    episodes.splice(0, 1);
+    if (episodes[0].next) episodes[0].next = undefined;
+    saveEpisodes(channel, episodes);
+  });
+  console.log("Run Update...");
+  await updateEpisodes();
+  console.log("Done");
+}
 
 // Re-update all
 // Delete all json files and run updateEpisodes

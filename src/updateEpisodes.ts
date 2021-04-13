@@ -12,6 +12,7 @@ import { Channel, CHANNELS, GREEK_SP, shortName } from "./Channel";
 import log from "./Log";
 import { addVerseTexts } from "./BibleAPI";
 import markNextEpisode from "./markNextEpisode";
+import { addVimeoUrls } from "./VimeoAPI";
 
 export default async function updateEpisodes() {
   return Promise.all(
@@ -44,6 +45,7 @@ async function updateEpisodesForChannel(channel: Channel) {
 
   if (newEpisodes.length > 0) {
     await addVerseTexts(newEpisodes, channel);
+    await addVimeoUrls(newEpisodes, channel);
     const finalEpisodes = addNewEpisodes(episodes, newEpisodes);
     markNextEpisode(finalEpisodes);
     saveEpisodes(channel, finalEpisodes);

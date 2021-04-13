@@ -45,6 +45,19 @@ export default function serverApp() {
     });
   });
 
+  app.get("/:channel/newerThan/:id", (req, res) => {
+    useEpisodes(req, res, episodes => {
+      const id = parseInt(req.params.id) || 1000000;
+      const newEpisodes: Episode[] = [];
+      let i = 0;
+      while (episodes[i] && episodes[i].id > id) {
+        newEpisodes.push(episodes[i]);
+        ++i;
+      }
+      res.json(newEpisodes);
+    });
+  });
+
   // All episodes from that chapter
   app.get("/:channel/book/:book/chapter/:chapter", (req, res) => {
     useEpisodes(req, res, episodes => {

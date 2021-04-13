@@ -50,6 +50,16 @@ test("All from 2", async () => {
   expect(response.body.length).toBe(2);
 });
 
+test("Newer than", async () => {
+  let response = await request(app).get("/dailydoseofgreek/newerThan/2094");
+  expect(response.status).toBe(200);
+  expect(response.body.map((ep: Episode) => ep.id)).toEqual([2096, 2095]);
+
+  response = await request(app).get("/dailydoseofgreek/newerThan/OOPS");
+  expect(response.status).toBe(200);
+  expect(response.body.length).toBe(0);
+});
+
 test("Books", async () => {
   let response = await request(app).get("/dailydoseofgreek/books");
   expect(response.status).toBe(200);

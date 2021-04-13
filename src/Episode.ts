@@ -7,12 +7,16 @@ export interface Reference {
   chapter: number;
   verse: number;
 }
+export interface VimeoUrls {
+  [size: string]: string;
+}
 
 export interface NewEpisode {
   title: string;
   url: string;
   reference?: Reference;
   vimeoId?: number;
+  vimeoUrls?: VimeoUrls;
   youtubeId?: string;
   text?: string;
   next?: number;
