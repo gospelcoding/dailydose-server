@@ -20,23 +20,24 @@ test("All", async () => {
   expect(response.status).toBe(200);
   expect(response.body.length).toBe(15);
   expect(response.body[0]).toEqual({
-    id: 2098,
-    title: "John 7:43",
-    url: "https://dailydoseofgreek.com/scripture-passage/john-7-43/",
-    reference: { book: "John", chapter: 7, verse: 43 },
-    vimeoId: 528291464,
-    youtubeId: "FGeotbAgYs0",
-    text: "σχισμα ουν εγενετο εν τω οχλω δι αυτον",
-    vimeoThumb: "https://i.vimeocdn.com/video/1093479870_1280x720.jpg?r=pad",
+    id: 2100,
+    title: "John 7:45",
+    url: "https://dailydoseofgreek.com/scripture-passage/john-7-45/",
+    reference: {
+      book: "John",
+      chapter: 7,
+      verse: 45
+    },
+    vimeoId: 528291491,
+    youtubeId: "UrShHg2CiTs",
+    text:
+      "ηλθον ουν οι υπηρεται προς τους αρχιερεις και φαρισαιους και ειπον αυτοις εκεινοι δια τι ουκ ηγαγετε αυτον",
+    vimeoThumb: "https://i.vimeocdn.com/video/1093479001_1280x720.jpg?r=pad",
     vimeoUrls: {
-      "314":
-        "https://player.vimeo.com/external/528291464.sd.mp4?s=709072d39ba572aa8161b6e51568da700135845e&profile_id=164&oauth2_token_id=1483004939",
-      "472":
-        "https://player.vimeo.com/external/528291464.sd.mp4?s=709072d39ba572aa8161b6e51568da700135845e&profile_id=165&oauth2_token_id=1483004939",
-      "670":
-        "https://player.vimeo.com/external/528291464.hd.mp4?s=5e874b45799d4b5f02d06f1bca2d21300ed43c64&profile_id=174&oauth2_token_id=1483004939",
-      "942":
-        "https://player.vimeo.com/external/528291464.hd.mp4?s=5e874b45799d4b5f02d06f1bca2d21300ed43c64&profile_id=175&oauth2_token_id=1483004939"
+      314: "https://player.vimeo.com/external/528291491.sd.mp4?s=36e8df87fe5067d481a33cc9513c8d1ef4c71cf5&profile_id=164&oauth2_token_id=1483004939",
+      472: "https://player.vimeo.com/external/528291491.sd.mp4?s=36e8df87fe5067d481a33cc9513c8d1ef4c71cf5&profile_id=165&oauth2_token_id=1483004939",
+      670: "https://player.vimeo.com/external/528291491.hd.mp4?s=fd167ae9b23833b1e0415922825da0f85cdecb60&profile_id=174&oauth2_token_id=1483004939",
+      942: "https://player.vimeo.com/external/528291491.hd.mp4?s=fd167ae9b23833b1e0415922825da0f85cdecb60&profile_id=175&oauth2_token_id=1483004939"
     }
   });
 });
@@ -53,7 +54,16 @@ test("All from 1000", async () => {
     vimeoId: 246116481,
     text:
       "ει τις ερχεται προς υμας και ταυτην την διδαχην ου φερει μη λαμβανετε αυτον εις οικιαν και χαιρειν αυτω μη λεγετε",
-    next: 999
+    next: 999,
+    vimeoThumb: "https://i.vimeocdn.com/video/670989115_1280x720.jpg?r=pad",
+    vimeoUrls: {
+      "360":
+        "https://player.vimeo.com/external/246116481.sd.mp4?s=d1214bab80905b8bb22086f0ee9b8d828ca3969a&profile_id=164&oauth2_token_id=1483004939",
+      "540":
+        "https://player.vimeo.com/external/246116481.sd.mp4?s=d1214bab80905b8bb22086f0ee9b8d828ca3969a&profile_id=165&oauth2_token_id=1483004939",
+      "720":
+        "https://player.vimeo.com/external/246116481.hd.mp4?s=28c498b427448d37da177f5de8af344670caffd7&profile_id=174&oauth2_token_id=1483004939"
+    }
   });
 });
 
@@ -64,9 +74,9 @@ test("All from 2", async () => {
 });
 
 test("Newer than", async () => {
-  let response = await request(app).get("/dailydoseofgreek/newerThan/2096");
+  let response = await request(app).get("/dailydoseofgreek/newerThan/2098");
   expect(response.status).toBe(200);
-  expect(response.body.map((ep: Episode) => ep.id)).toEqual([2098, 2097]);
+  expect(response.body.map((ep: Episode) => ep.id)).toEqual([2100, 2099]);
 
   response = await request(app).get("/dailydoseofgreek/newerThan/OOPS");
   expect(response.status).toBe(200);
@@ -148,7 +158,16 @@ test("Episodes in chapter", async () => {
     vimeoId: 124760846,
     text:
       "και εισελθων παλιν εις καφαρναουμ δι ημερων ηκουσθη οτι εν οικω εστιν",
-    next: 254
+    next: 254,
+    vimeoThumb: "https://i.vimeocdn.com/video/514605920_1280x720.jpg?r=pad",
+    vimeoUrls: {
+      "270":
+        "https://player.vimeo.com/external/124760846.mobile.mp4?s=799be896f2f39e70d8212d5fc44e23c5f27c1380&profile_id=116&oauth2_token_id=1483004939",
+      "360":
+        "https://player.vimeo.com/external/124760846.sd.mp4?s=86e9b5e50f24aa4d2a59256cea497398df03b9b9&profile_id=112&oauth2_token_id=1483004939",
+      "720":
+        "https://player.vimeo.com/external/124760846.hd.mp4?s=4919ebbe3408a43ba0bcc02edff42a03e332907b&profile_id=113&oauth2_token_id=1483004939"
+    }
   });
 
   response = await request(app).get(
