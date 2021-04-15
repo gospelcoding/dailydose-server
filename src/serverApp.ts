@@ -39,7 +39,6 @@ export default function serverApp() {
       "http:",
       "https:"
     );
-    console.log(`Query URL: ${queryUrl}`);
     const channel = channelFromUrl(queryUrl);
     if (!channel) res.status(404).send();
     else {
