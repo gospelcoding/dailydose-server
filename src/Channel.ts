@@ -15,6 +15,10 @@ export function shortName(channel: Channel) {
   return channel.replace("dailydoseof", "").replace("dosisdiariade", "");
 }
 
+export function channelFromUrl(url: string) {
+  return CHANNELS.find(ch => url.includes(ch));
+}
+
 export function isChannel(word: string): word is Channel {
   return CHANNELS.includes(word as Channel);
 }

@@ -45,8 +45,8 @@ test("Get rich books", () => {
   ];
   expect(getRichBooks(episodes, false)).toEqual([
     { name: "Mark", count: 1 },
-    { name: "John", count: 2 },
-    { name: "Special", count: 1 }
+    { name: "John", count: 2 }
+    // { name: "Special", count: 1 }
   ]);
 });
 

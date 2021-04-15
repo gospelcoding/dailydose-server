@@ -194,7 +194,10 @@ export function compBooks(a: string, b: string, sp: boolean) {
 
 export function getRichBooks(episodes: Episode[], sp: boolean) {
   const books = episodes.reduce((bookNames: RichBook[], ep) => {
-    const name = ep.reference ? ep.reference.book : SPECIAL;
+    // const name = ep.reference ? ep.reference.book : SPECIAL;
+    const name = ep.reference?.book;
+    if (!name) return bookNames;
+
     const index = bookNames.findIndex(bn => bn.name == name);
     if (index == -1) {
       bookNames.push({ name, count: 1 });

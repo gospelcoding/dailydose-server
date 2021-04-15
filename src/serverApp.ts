@@ -1,6 +1,12 @@
 import express, { Request, Response } from "express";
 import { getRichBooks, getRichChapters } from "./BibleBook";
-import { Channel, CHANNELS, GREEK_SP, isChannel } from "./Channel";
+import {
+  Channel,
+  channelFromUrl,
+  CHANNELS,
+  GREEK_SP,
+  isChannel
+} from "./Channel";
 import { chapterEpisodes, Episode } from "./Episode";
 import { getAllEpisodes, getEpisodes } from "./EpisodeStorage";
 
@@ -25,6 +31,22 @@ export default function serverApp() {
         );
       });
       res.json(episodes);
+    }
+  });
+
+  app.get("/byUrl", (req, res) => {
+    const queryUrl = decodeURIComponent(`${req.query.url}`).replace(
+      "http:",
+      "https:"
+    );
+    console.log(`Query URL: ${queryUrl}`);
+    const channel = channelFromUrl(queryUrl);
+    if (!channel) res.status(404).send();
+    else {
+      const episodes = getEpisodes(channel);
+      const episode = episodes.find(ep => ep.url === queryUrl);
+      if (!episode) res.status(404).send();
+      else res.json(episode);
     }
   });
 
@@ -55,6 +77,15 @@ export default function serverApp() {
         ++i;
       }
       res.json(newEpisodes);
+    });
+  });
+
+  app.get("/:channel/id/:id", (req, res) => {
+    useEpisodes(req, res, episodes => {
+      const id = parseInt(req.params.id);
+      const episode = episodes.find(ep => ep.id === id);
+      if (episode) res.json(episode);
+      else res.status(404).send();
     });
   });
 

@@ -17,6 +17,7 @@ export interface NewEpisode {
   reference?: Reference;
   vimeoId?: number;
   vimeoUrls?: VimeoUrls;
+  vimeoThumb?: string;
   youtubeId?: string;
   text?: string;
   next?: number;
