@@ -5,9 +5,11 @@ import { getEpisodes, saveEpisodes } from "./EpisodeStorage";
 import log from "./Log";
 import markNextEpisode from "./markNextEpisode";
 import updateEpisodes from "./updateEpisodes";
+import { addVimeoUrls, getVideoUrls } from "./VimeoAPI";
 
 // markAll();
 // runUpdate();
+// getVimeoUrls();
 
 // Mark next episodes
 function markAll() {
@@ -40,3 +42,13 @@ async function runUpdate() {
 
 // Re-update all
 // Delete all json files and run updateEpisodes
+
+// Add Vimeo urls to all lacking it
+async function getVimeoUrls() {
+  CHANNELS.forEach(channel => {
+    const episodes = getEpisodes(channel);
+    addVimeoUrls(episodes, channel).then(() => {
+      saveEpisodes(channel, episodes);
+    });
+  });
+}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Channel } from "./Channel";
+import { Channel, shortName } from "./Channel";
 import secrets from "./secrets";
 import log from "./Log";
 import { NewEpisode, VimeoUrls } from "./Episode";
@@ -31,6 +31,7 @@ export async function addVimeoUrls(
   for (let i = 0; i < episodes.length; ++i) {
     const episode = episodes[i];
     if (episode.vimeoId) {
+      // console.log(`Get Vimeo for ${shortName(channel)}: ${episode.title}`);
       const vimeoParams = await getVideoUrls(episode.vimeoId, channel);
       if (Object.keys(vimeoParams).length > 0)
         episodes[i] = { ...episodes[i], ...vimeoParams };

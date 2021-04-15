@@ -13,6 +13,7 @@ import log from "./Log";
 import { addVerseTexts } from "./BibleAPI";
 import markNextEpisode from "./markNextEpisode";
 import { addVimeoUrls } from "./VimeoAPI";
+import { sendNotification } from "./Firebase";
 
 export default async function updateEpisodes() {
   return Promise.all(
@@ -49,6 +50,8 @@ async function updateEpisodesForChannel(channel: Channel) {
     const finalEpisodes = addNewEpisodes(episodes, newEpisodes);
     markNextEpisode(finalEpisodes);
     saveEpisodes(channel, finalEpisodes);
+
+    sendNotification(channel, finalEpisodes[0]);
   }
 }
 
