@@ -7,7 +7,7 @@ import log from "./Log";
 const UPDATE_INTERVAL = 1000 * 60 * 5; // 5 minutes
 
 // Init Firebase
-// initFirebase();  // This now happens in Firebase.sendNotification
+initFirebase();
 
 // Watch rss feeds
 cron.schedule("*/5 * * * *", () => {
