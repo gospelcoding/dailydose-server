@@ -17,6 +17,7 @@ export function initFirebase() {
 export function sendNotification(channel: Channel, episode: Episode) {
   initFirebase();
 
+  log(`Send notification for ${channel} ${episode.title}`);
   const message = {
     notification: {
       title: title(channel, episode),

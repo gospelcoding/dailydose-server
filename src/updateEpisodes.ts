@@ -41,10 +41,11 @@ async function updateEpisodesForChannel(channel: Channel) {
       i += 1;
     }
     page += 1;
-    log(`${shortName(channel)} PAGE: ${page}`);
+    // log(`${shortName(channel)} PAGE: ${page}`);
   }
 
   if (newEpisodes.length > 0) {
+    log(`Add ${newEpisodes.length} episodes to ${channel}`);
     await addVerseTexts(newEpisodes, channel);
     await addVimeoUrls(newEpisodes, channel);
     const finalEpisodes = addNewEpisodes(episodes, newEpisodes);
