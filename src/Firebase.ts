@@ -35,7 +35,7 @@ export function sendNotification(channel: Channel, episode: Episode) {
     .send(message)
     .then(response => {
       // Response is a message ID string.
-      // console.log("Successfully sent message:", response);
+      console.log("Successfully sent message:", response);
     })
     .catch(error => {
       log(`Error sending message: ${error}`);
