@@ -1,16 +1,22 @@
 import serverApp from "./serverApp";
 import { initFirebase } from "./Firebase";
 import updateEpisodes from "./updateEpisodes";
+import cron from "node-cron";
+import log from "./Log";
 
 const UPDATE_INTERVAL = 1000 * 60 * 5; // 5 minutes
 
 // Init Firebase
-initFirebase();
+// initFirebase();
 
 // Watch rss feeds
-setInterval(() => {
+cron.schedule("*/5 * * * *", () => {
+  log("Running update...");
   updateEpisodes();
-}, UPDATE_INTERVAL);
+});
+// setInterval(() => {
+//   updateEpisodes();
+// }, UPDATE_INTERVAL);
 
 // Start server
 const app = serverApp();

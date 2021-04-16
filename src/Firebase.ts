@@ -1,4 +1,4 @@
-import admin from "firebase-admin";
+import admin, { initializeApp } from "firebase-admin";
 import { Channel, GREEK_SP, shortName } from "./Channel";
 import { Episode } from "./Episode";
 import { getEpisodes } from "./EpisodeStorage";
@@ -15,6 +15,8 @@ export function initFirebase() {
 }
 
 export function sendNotification(channel: Channel, episode: Episode) {
+  initFirebase();
+
   const message = {
     notification: {
       title: title(channel, episode),
