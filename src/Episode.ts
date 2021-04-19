@@ -14,6 +14,7 @@ export interface VimeoUrls {
 export interface NewEpisode {
   title: string;
   url: string;
+  timestamp: string;
   reference?: Reference;
   vimeoId?: number;
   vimeoUrls?: VimeoUrls;
@@ -34,6 +35,7 @@ export interface MultiChannelEpisodes {
 export interface RSSItem {
   title: string;
   link: string;
+  pubDate: string;
   "content:encoded": string;
 }
 
@@ -45,7 +47,8 @@ export function episodeFromRSS(item: RSSItem, sp: boolean): NewEpisode {
 
   const episode: NewEpisode = {
     title,
-    url: item.link
+    url: item.link,
+    timestamp: item.pubDate
   };
   if (reference) episode.reference = reference;
   if (vimeoId) episode.vimeoId = vimeoId;
