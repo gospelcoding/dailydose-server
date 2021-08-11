@@ -23,24 +23,28 @@ test("Get rich books", () => {
       id: 4,
       title: "",
       url: "",
-      reference: { book: "John", chapter: 1, verse: 2 }
+      reference: { book: "John", chapter: 1, verse: 2 },
+      timestamp: "Wed, 11 Aug 2021 05:30:53 +0000"
     },
     {
       id: 4,
       title: "",
       url: "",
-      reference: { book: "John", chapter: 1, verse: 2 }
+      reference: { book: "John", chapter: 1, verse: 2 },
+      timestamp: "Wed, 11 Aug 2021 05:30:53 +0000"
     },
     {
       id: 4,
       title: "GNT",
-      url: ""
+      url: "",
+      timestamp: "Wed, 11 Aug 2021 05:30:53 +0000"
     },
     {
       id: 4,
       title: "",
       url: "",
-      reference: { book: "Mark", chapter: 8, verse: 2 }
+      reference: { book: "Mark", chapter: 8, verse: 2 },
+      timestamp: "Wed, 11 Aug 2021 05:30:53 +0000"
     }
   ];
   expect(getRichBooks(episodes, false)).toEqual([

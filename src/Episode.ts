@@ -104,6 +104,11 @@ export function chapterEpisodes(
   const chEpisodes = episodes.filter(
     ep => ep.reference?.book == book && ep.reference?.chapter == chapter
   );
-  chEpisodes.sort((a, b) => a.reference!.verse - b.reference!.verse);
+  // Sort by verse first, then id (both asc)
+  chEpisodes.sort((a, b) =>
+    a.reference!.verse == b.reference!.verse
+      ? a.id - b.id
+      : a.reference!.verse - b.reference!.verse
+  );
   return chEpisodes;
 }

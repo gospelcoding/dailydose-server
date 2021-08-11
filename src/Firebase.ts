@@ -15,6 +15,8 @@ export function initFirebase() {
 }
 
 export function sendNotification(channel: Channel, episode: Episode) {
+  if (process.env.NODE_ENV !== "production") return;
+
   log(`Send notification for ${channel} ${episode.title}`);
   const message = {
     notification: {

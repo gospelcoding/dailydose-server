@@ -30,8 +30,7 @@ test("All", async () => {
     },
     vimeoId: 528291491,
     youtubeId: "UrShHg2CiTs",
-    text:
-      "ηλθον ουν οι υπηρεται προς τους αρχιερεις και φαρισαιους και ειπον αυτοις εκεινοι δια τι ουκ ηγαγετε αυτον",
+    text: "ηλθον ουν οι υπηρεται προς τους αρχιερεις και φαρισαιους και ειπον αυτοις εκεινοι δια τι ουκ ηγαγετε αυτον",
     vimeoThumb: "https://i.vimeocdn.com/video/1093479001_1280x720.jpg?r=pad",
     vimeoUrls: {
       314: "https://player.vimeo.com/external/528291491.sd.mp4?s=36e8df87fe5067d481a33cc9513c8d1ef4c71cf5&profile_id=164&oauth2_token_id=1483004939",
@@ -52,8 +51,7 @@ test("All from 1000", async () => {
     url: "https://dailydoseofgreek.com/scripture-passage/2-john-1-10/",
     reference: { book: "2 John", chapter: 1, verse: 10 },
     vimeoId: 246116481,
-    text:
-      "ει τις ερχεται προς υμας και ταυτην την διδαχην ου φερει μη λαμβανετε αυτον εις οικιαν και χαιρειν αυτω μη λεγετε",
+    text: "ει τις ερχεται προς υμας και ταυτην την διδαχην ου φερει μη λαμβανετε αυτον εις οικιαν και χαιρειν αυτω μη λεγετε",
     next: 999,
     vimeoThumb: "https://i.vimeocdn.com/video/670989115_1280x720.jpg?r=pad",
     vimeoUrls: {
@@ -156,8 +154,7 @@ test("Episodes in chapter", async () => {
     title: "Mark 2:1",
     url: "https://dailydoseofgreek.com/scripture-passage/mark/mark-21/",
     vimeoId: 124760846,
-    text:
-      "και εισελθων παλιν εις καφαρναουμ δι ημερων ηκουσθη οτι εν οικω εστιν",
+    text: "και εισελθων παλιν εις καφαρναουμ δι ημερων ηκουσθη οτι εν οικω εστιν",
     next: 254,
     vimeoThumb: "https://i.vimeocdn.com/video/514605920_1280x720.jpg?r=pad",
     vimeoUrls: {
@@ -176,8 +173,8 @@ test("Episodes in chapter", async () => {
   expect(response.status).toBe(200);
   expect(response.body.map((ep: Episode) => ep.title)).toEqual([
     "Philippians 2:6 – Weekend",
-    "Phil 2-9-11b",
-    "Phil 2-9-11"
+    "Phil 2-9-11",
+    "Phil 2-9-11b"
   ]);
 });
 

@@ -19,5 +19,7 @@ cron.schedule("*/5 * * * *", () => {
 const app = serverApp();
 const port = 3001;
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(
+    `Daily Dose API listening at http://localhost:${port}. ENV: ${process.env.NODE_ENV}`
+  );
 });

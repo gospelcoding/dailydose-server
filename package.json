@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run-server": "node dist/index.js",
+    "run-server": "export NODE_ENV=development && node dist/index.js",
     "watch-run-server": "yarn npm-watch run-server",
     "start": "yarn concurrently \"yarn tsc -w\" \"yarn watch-run-server\"",
     "test": "yarn jest --watchAll",

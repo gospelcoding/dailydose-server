@@ -2,12 +2,12 @@ import { chapterEpisodes, Episode, Reference } from "./Episode";
 
 export default function markNextEpisode(episodes: Episode[]) {
   episodes.forEach((ep, index) => {
-    if (ep.next || !ep.reference) return;
+    if (shouldSkip(ep, index)) return;
 
     const sameChEps = chapterEpisodes(
       episodes,
-      ep.reference.book,
-      ep.reference.chapter
+      ep.reference!.book,
+      ep.reference!.chapter
     );
     const nextEp = sameChEps[sameChEps.findIndex(e => e.id == ep.id) + 1];
     if (nextEp) {
@@ -22,6 +22,21 @@ export default function markNextEpisode(episodes: Episode[]) {
       if (nextChEp) ep.next = nextChEp.id;
     }
   });
+}
+
+function shouldSkip(ep: Episode, index: number) {
+  if (index == 0) return true; // Skip the first episode, any "next" identified for that one is probably wrong
+
+  if (!ep.reference) return true;
+
+  if (ep.next && !nextIsOlder(ep)) return true;
+
+  return false;
+}
+
+function nextIsOlder(ep: Episode) {
+  // This hints at a problem - sometimes an old episode is incorrectly identified as the "next" episode
+  return ep.next && ep.next < ep.id;
 }
 
 function nextVerseInChapter(ref: Reference, ref2: Reference) {
